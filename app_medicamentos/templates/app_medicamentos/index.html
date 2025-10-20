@@ -1,0 +1,123 @@
+{% extends "app_medicamentos/base.html" %}
+{% block body %}
+<h3 class="m-4">Todos los Medicamentos</h3>
+                <div class="row">
+                    <div class="col-12">
+
+                        {% if medicamentos %}
+                        <div class="card bh-light ms-4 me-4 mb-4">
+                            <div class="card-header">
+                                <i class="fa-solid fa-plus fa-lg"></i>Registro de medicamentos 
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">ID PROVEEDOR</th>
+                                            <th scope="col">NOMBRE</th>
+                                            <th scope="col">FUNCION</th>
+                                            <th scope="col">PRESENTACION</th>
+                                            <th scope="col">PRECIO</th>
+                                            <th scope="col">STOCK</th>
+                                            <th scope="col">FECHA DE CADUCIDAD</th>
+                                            <th scope="col">ACCIONES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for medicamento in medicamentos %}
+                                            <td>{{ medicamento.id_proveedor }}</td>
+                                            <td>{{ medicamento.nombre }}</td>
+                                            <td>{{ medicamento.funcion }}</td>
+                                            <td>{{ medicamento.presentacion }}</td>
+                                            <td>{{ medicamento.precio }}</td>
+                                            <td>{{ medicamento.stock }}</td>
+                                            <td>{{ medicamento.f_caducidad }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-success me-1" href="{% url 'view_medicamento' medicamento.id %}" data-bs-toggle="modal" data-bs-target="#myModal
+                                                {{medicamento.id}}">
+                                                    <i class="fa-solid fa-circle-info fa-lg"></i>
+                                                </button>
+                                                <div class="modal" id="myModal{{medicamento.id}}" tabindex="-1" arialavelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                Medicamento: {{ medicamento.nombre}} {{ medicamento.presentacion }}
+                                                            </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <ul class="list-unstyled">
+                                                                <li>No. proveedor del medicamento: <strong>{{ medicamento.id_proveedor }}</strong></li>
+                                                                <li>Nombre del medicamento: <strong>{{ medicamento.nombre }}</strong></li>
+                                                                <li>Funcion del medicamento: <strong>{{ medicamento.funcion }}</strong></li>
+                                                                <li>Presentacion del medicamento: <strong>{{ medicamento.presentacion }}</strong></li>
+                                                                <li>Precio del medicamento: <strong>{{ medicamento.precio }}</strong></li>
+                                                                <li>Stock del medicamento: <strong>{{ medicamento.stock }}</strong></li>
+                                                                <li>Caducidad del medicamento: <strong>{{ medicamento.f_caducidad }}</strong></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a class="btn btn-warning me-1" href="{% url 'edit' medicamento.id %}">
+                                                    <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{medicamento.id}}">
+                                                    <i class="fa-solid fa-trash-can fa-lg"></i>
+                                                </button>
+                                                
+
+
+                                                <div class="modal" id="delete{{medicamento.id}}" tabindex="-1" arialavelledby="myModalLabel2" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                Medicamento: {{ medicamento.nombre}} {{ medicamento.presentacion }}
+                                                            </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¿Seguro De Eliminar El Registro?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{% url 'delete' medicamento.id %}" method="POST">
+                                                                {% csrf_token %}
+                                                                <input type="submit" class="btn btn-primary" value="Delete"
+                                                            </form>
+
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+
+                                            </td>
+                                            </tr>
+                                            {% endfor %}
+                                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="card-text"></p>
+                            </div>
+                        </div>
+                        {% else %}
+                            <h5 class="alert alert-primary ms-4 me-4">Sin registros de Medicamentos</h5>
+                        {% endif %}
+
+                        
+                    </div>
+                </div>
+{% endblock %}
